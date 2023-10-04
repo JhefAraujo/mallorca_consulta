@@ -44,10 +44,10 @@
         document.getElementById('loader').style.display = "flex";
     }
 
-    var url = 'http://127.0.0.1:8000';
+    const url = 'http://127.0.0.1:8000';
 
 
-    async function postagem(url = 'http://127.0.0.1:8000/client/', data = { "input": document.getElementById('codigo').value }) {
+    async function postagem(url = 'http://192.168.68.125:8000/client/', data = { "input": document.getElementById('codigo').value }) {
         const response = await fetch(url, {
             method: "POST",
             mode: "cors",
@@ -72,7 +72,7 @@
         return finedata
     }
 
-    async function process(url = 'http://127.0.0.1:8000/order/',) {
+    async function process(url = 'http://192.168.68.125:8000/order/',) {
         const final = await recept();
         dados = { "businessPartner": final.replace("'", '"') };
         const resposta = await fetch(url, {
@@ -127,7 +127,7 @@
         return dadotres;
     }
 
-    async function postedois(url = 'http://127.0.0.1:8000/botorder/') {
+    async function postedois(url = 'http://192.168.68.125:8000/botorder/') {
         botfe = await recepcaodois();
         botbruto = botfe["documentNo"];
         botdata = { "id": botbruto };
@@ -144,7 +144,7 @@
         return botresponsedois.json();
     }
 
-    async function postetres(url = 'http://127.0.0.1:8000/botorder/') {
+    async function postetres(url = 'http://192.168.68.125:8000/botorder/') {
         botfe = await recepcaotres();
         botbruto = botfe["documentNo"];
         botdata = { "id": botbruto };
@@ -161,7 +161,7 @@
         return botresponsetres.json();
     }
 
-    async function poste(url = 'http://127.0.0.1:8000/botorder/') {
+    async function poste(url = 'http://192.168.68.125:8000/botorder/') {
         botfe = await recepcao();
         botbruto = botfe["documentNo"];
         botdata = { "id": botbruto };
