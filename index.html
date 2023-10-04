@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.min.js"></script>
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+
+<body>
+    <main>
+        <div class="box">
+            <h2>Insira o código de cliente</h2>
+            <div class="text-deliver">
+                <input id="codigo" type="text" class="texto">
+                <span
+                    onclick="criarDiv(), postagem(), recept(), process(), recepcao(), poste(), finalrecieve(), recepcaodois(), recepcaotres(), postedois(), postetres(), finalrecievedois(), finalrecievetres()"
+                    class="material-symbols-outlined">
+                    send
+                </span>
+            </div>
+        <div id="loader" class="loaderbox" style="display: none;">
+            <div class="load"></div>
+        </div>
+        </div>
+        <ul id="list" class="list" style="display: none;">
+            <h4>Últimas vendas</h4>
+            <div class="list-item">
+                <p id="header" class="header"></p>
+                <div id="product" class="product">
+                </div>
+            </div>
+        </ul>
+    </main>
+</body>
+
+<script>
+    function criarDiv() {
+        document.getElementById('list').style.display = "block";
+        document.getElementById('loader').style.display = "flex";
+    }
+
+    var url = 'http://127.0.0.1:8000';
+
+
+    async function postagem(url = 'http://127.0.0.1:8000/client/', data = { "input": document.getElementById('codigo').value }) {
+        const response = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(data),
+
+        })
+        return response.json();
+    }
+
+    async function recept() {
+        alldata = await postagem();
+        lessdata = JSON.parse(alldata);
+        lessless = lessdata.response;
+        lless = lessless.data;
+        finaldata = lless[0];
+        document.getElementById('header').innerHTML = finaldata["_identifier"];
+        finedata = finaldata["$ref"].slice(16);
+        return finedata
+    }
+
+    async function process(url = 'http://127.0.0.1:8000/order/',) {
+        const final = await recept();
+        dados = { "businessPartner": final.replace("'", '"') };
+        const resposta = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(dados),
+
+        })
+        return resposta.json();
+    }
+
+    async function recepcao() {
+        tododado = await process();
+        menosdado = JSON.parse(tododado);
+        menosmenos = menosdado.response;
+        mmenos = menosmenos.data;
+        dadofinal = mmenos[0];
+        for (var i = 0; i < mmenos.length; i++) {
+            g = document.createElement("p");
+            g.setAttribute("id", "pedido" + `${i + 1}`);
+            element = document.getElementById('product');
+            element.appendChild(g)
+        }
+        data1 = dadofinal["orderDate"];
+        document.getElementById('pedido1').innerHTML = dadofinal["documentNo"] + " - " + data1.split('-').reverse().join('/');
+        return dadofinal;
+    }
+
+    async function recepcaodois() {
+        tododado = await process();
+        menosdado = JSON.parse(tododado);
+        menosmenos = menosdado.response;
+        mmenos = menosmenos.data;
+        dadodois = mmenos[1];
+        data2 = dadodois["orderDate"];
+        document.getElementById('pedido2').innerHTML =  dadodois["documentNo"] + " - " + data2.split('-').reverse().join('/');
+        return dadodois;
+    }
+
+    async function recepcaotres() {
+        tododado = await process();
+        menosdado = JSON.parse(tododado);
+        menosmenos = menosdado.response;
+        mmenos = menosmenos.data;
+        dadotres = mmenos[2];
+        data3 = dadotres["orderDate"];
+        document.getElementById('pedido3').innerHTML =  dadotres["documentNo"] + " - " + data3.split('-').reverse().join('/');
+        return dadotres;
+    }
+
+    async function postedois(url = 'http://127.0.0.1:8000/botorder/') {
+        botfe = await recepcaodois();
+        botbruto = botfe["documentNo"];
+        botdata = { "id": botbruto };
+        const botresponsedois = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(botdata),
+
+        })
+        return botresponsedois.json();
+    }
+
+    async function postetres(url = 'http://127.0.0.1:8000/botorder/') {
+        botfe = await recepcaotres();
+        botbruto = botfe["documentNo"];
+        botdata = { "id": botbruto };
+        const botresponsetres = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(botdata),
+
+        })
+        return botresponsetres.json();
+    }
+
+    async function poste(url = 'http://127.0.0.1:8000/botorder/') {
+        botfe = await recepcao();
+        botbruto = botfe["documentNo"];
+        botdata = { "id": botbruto };
+        const botresponse = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(botdata),
+
+        })
+        return botresponse.json();
+    }
+
+    async function finalrecieve() {
+        fidado = await poste();
+        lessfidado = JSON.parse(fidado);
+        menosdado = lessfidado.response;
+        datadado = menosdado.data;
+        zerodado = datadado[0];
+        if (zerodado.hasOwnProperty('rastreio') == false) {
+            console.log('Sucesso!')
+        } if (zerodado.hasOwnProperty('rastreio') == undefined) {
+            console.log('foi!')
+        }
+        else {
+            document.getElementById('pedido1').innerHTML += " - " + zerodado.rastreio;
+        }
+    }
+
+    async function finalrecievedois() {
+        fidado = await postedois();
+        lessfidado = JSON.parse(fidado);
+        menosdado = lessfidado.response;
+        datadado = menosdado.data;
+        zerodado = datadado[0];
+        if (zerodado.hasOwnProperty('rastreio') == false) {
+            console.log('Sucesso!')
+        }
+        else {
+            document.getElementById('pedido2').innerHTML += " - " + zerodado.rastreio;
+        }
+    }
+
+    async function finalrecievetres() {
+        fidado = await postetres();
+        lessfidado = JSON.parse(fidado);
+        menosdado = lessfidado.response;
+        datadado = menosdado.data;
+        zerodado = datadado[0];
+        if (zerodado.hasOwnProperty('rastreio') == true) {
+            document.getElementById('pedido3').innerHTML += " - " + zerodado.rastreio;
+        }
+        else {
+            document.getElementById('pedido3').innerHTML += " sem rastreio"
+        }
+        document.getElementById('loader').style.display = "none";
+    }
+</script>
+
+</html>
