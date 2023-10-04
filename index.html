@@ -23,9 +23,9 @@
                     send
                 </span>
             </div>
-        <div id="loader" class="loaderbox" style="display: none;">
-            <div class="load"></div>
-        </div>
+            <div id="loader" class="loaderbox" style="display: none;">
+                <div class="load"></div>
+            </div>
         </div>
         <ul id="list" class="list" style="display: none;">
             <h4>Últimas vendas</h4>
@@ -112,7 +112,7 @@
         mmenos = menosmenos.data;
         dadodois = mmenos[1];
         data2 = dadodois["orderDate"];
-        document.getElementById('pedido2').innerHTML =  dadodois["documentNo"] + " - " + data2.split('-').reverse().join('/');
+        document.getElementById('pedido2').innerHTML = dadodois["documentNo"] + " - " + data2.split('-').reverse().join('/');
         return dadodois;
     }
 
@@ -123,7 +123,7 @@
         mmenos = menosmenos.data;
         dadotres = mmenos[2];
         data3 = dadotres["orderDate"];
-        document.getElementById('pedido3').innerHTML =  dadotres["documentNo"] + " - " + data3.split('-').reverse().join('/');
+        document.getElementById('pedido3').innerHTML = dadotres["documentNo"] + " - " + data3.split('-').reverse().join('/');
         return dadotres;
     }
 
@@ -184,13 +184,10 @@
         menosdado = lessfidado.response;
         datadado = menosdado.data;
         zerodado = datadado[0];
-        if (zerodado.hasOwnProperty('rastreio') == false) {
-            console.log('Sucesso!')
-        } if (zerodado.hasOwnProperty('rastreio') == undefined) {
-            console.log('foi!')
-        }
-        else {
+        try {
             document.getElementById('pedido1').innerHTML += " - " + zerodado.rastreio;
+        } catch (error) {
+            document.getElementById('pedido1').innerHTML += " - sem rastreio"
         }
     }
 
@@ -200,11 +197,10 @@
         menosdado = lessfidado.response;
         datadado = menosdado.data;
         zerodado = datadado[0];
-        if (zerodado.hasOwnProperty('rastreio') == false) {
-            console.log('Sucesso!')
-        }
-        else {
+        try {
             document.getElementById('pedido2').innerHTML += " - " + zerodado.rastreio;
+        } catch (error) {
+            document.getElementById('pedido2').innerHTML += " - sem rastreio"
         }
     }
 
@@ -214,13 +210,12 @@
         menosdado = lessfidado.response;
         datadado = menosdado.data;
         zerodado = datadado[0];
-        if (zerodado.hasOwnProperty('rastreio') == true) {
+        try {
             document.getElementById('pedido3').innerHTML += " - " + zerodado.rastreio;
+        } catch (error) {
+            document.getElementById('pedido3').innerHTML += " - sem rastreio"
         }
-        else {
-            document.getElementById('pedido3').innerHTML += " sem rastreio"
-        }
-        document.getElementById('loader').style.display = "none";
+        document.getElementById('loader').style.display = 'none'
     }
 </script>
 
