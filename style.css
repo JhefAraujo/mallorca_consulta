@@ -132,10 +132,16 @@ h2 {
     align-items: center;
     justify-content: center;
     z-index: 11111;
+    animation: appear 0.5s ease-in-out;
 }
 
-.noload {
-    display: none;
+@keyframes appear {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
 }
 
 .load {
