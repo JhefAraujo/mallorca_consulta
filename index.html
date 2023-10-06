@@ -81,7 +81,6 @@
     async function projeto(url = 'https://api-mallorca.onrender.com/project/') {
         idbase = await recept();
         const dados = { "partner": idbase }
-        console.log(dados);
         const resposta = await fetch(url, {
             method: "POST",
             mode: "cors",
@@ -95,7 +94,6 @@
         parseDado = JSON.parse(dado);
         responseDado = parseDado.response;
         dataDado = responseDado.data;
-        console.log(dataDado);
 
 
 
@@ -113,16 +111,15 @@
             g = document.createElement("p");
             g.setAttribute("id", "conserto" + `${i + 1}`);
             element = document.getElementById('projectProduct');
-            element.appendChild(g)
+            element.appendChild(g);
             arrayDado = dataDado[i];
             elemento = document.getElementById('conserto' + `${i + 1}`);
             elemento.innerHTML = "Conserto número: " + arrayDado.searchKey + "<br>" + "Data início: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "<span class='ver'>Ver mais</span>";
             if (arrayDado.phase == 'AC') {
-                o.innerHTML +=  "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Retirado <br>'
+                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Retirado <br>'
             }
             else if (arrayDado.phase != 'AC' & arrayDado.endingDate != null) {
                 o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Aguardando retirada <br>'
-                console.log(arrayDado.endingDate);
             }
             else {
                 o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + 'Status: Em conserto <br>'
