@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <main>
+    <main id="blurry">
         <div class="box">
             <h2>Insira o código de cliente</h2>
             <div class="text-deliver">
@@ -130,13 +130,19 @@
                 pop = document.getElementById('popup' + `${i + 1}`);
                 pop.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
+                b = document.getElementById('blurry');
+                b.style.filter = "blur(5px)"
             }
             x.onclick = function erase() {
                 pop = document.getElementById('popup' + `${i + 1}`);
                 pop.style.display = 'none';
                 document.body.style.overflow = 'auto';
+                b = document.getElementById('blurry');
+                b.style.filter = "blur(0)"
             }
         }
+        document.getElementById('loader').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     async function process(url = 'https://api-mallorca.onrender.com/botorder/',) {
@@ -204,8 +210,7 @@
             element.appendChild(g)
             document.getElementById('pedido1').innerHTML = "Não possui vendas nos últimos 60 dias"
         }
-        document.getElementById('loader').style.display = 'none';
-        document.body.style.overflow = 'auto';
+
     }
 </script>
 
