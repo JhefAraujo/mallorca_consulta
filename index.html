@@ -16,9 +16,8 @@
         <div class="box">
             <h2>Insira o código de cliente</h2>
             <div class="text-deliver">
-                <input id="codigo" type="text" class="texto">
-                <span
-                    onclick="criarDiv(), postagem(), recept(), process(), recepcao(), poste(), finalrecieve(), recepcaodois(), recepcaotres(), postedois(), postetres(), finalrecievedois(), finalrecievetres()"
+                <input placeholder="Cód" id="codigo" type="text" class="texto">
+                <span onclick="criarDiv(), postagem(), recept(), process(), poste(), finalrecieve()"
                     class="material-symbols-outlined">
                     send
                 </span>
@@ -44,10 +43,7 @@
         document.getElementById('loader').style.display = "flex";
     }
 
-    const url = 'http://127.0.0.1:8000';
-
-
-    async function postagem(url = 'http://192.168.68.125:8000/client/', data = { "input": document.getElementById('codigo').value }) {
+    async function postagem(url = 'https://api-mallorca.onrender.com/client/', data = { "input": document.getElementById('codigo').value }) {
         const response = await fetch(url, {
             method: "POST",
             mode: "cors",
@@ -68,13 +64,13 @@
         lless = lessless.data;
         finaldata = lless[0];
         document.getElementById('header').innerHTML = finaldata["_identifier"];
-        finedata = finaldata["$ref"].slice(16);
+        finedata = finaldata["id"];
         return finedata
     }
 
-    async function process(url = 'http://192.168.68.125:8000/order/',) {
+    async function process(url = 'https://api-mallorca.onrender.com/botorder/',) {
         const final = await recept();
-        dados = { "businessPartner": final.replace("'", '"') };
+        dados = { "bpartner": final };
         const resposta = await fetch(url, {
             method: "POST",
             mode: "cors",
@@ -85,86 +81,20 @@
             body: JSON.stringify(dados),
 
         })
-        return resposta.json();
-    }
-
-    async function recepcao() {
-        tododado = await process();
+        const dadi = await resposta.json();
+        tododado = dadi;
         menosdado = JSON.parse(tododado);
         menosmenos = menosdado.response;
         mmenos = menosmenos.data;
         dadofinal = mmenos[0];
-        for (var i = 0; i < mmenos.length; i++) {
-            g = document.createElement("p");
-            g.setAttribute("id", "pedido" + `${i + 1}`);
-            element = document.getElementById('product');
-            element.appendChild(g)
-        }
-        data1 = dadofinal["orderDate"];
-        document.getElementById('pedido1').innerHTML = dadofinal["documentNo"] + " - " + data1.split('-').reverse().join('/');
-        return dadofinal;
+        return mmenos;
     }
 
-    async function recepcaodois() {
-        tododado = await process();
-        menosdado = JSON.parse(tododado);
-        menosmenos = menosdado.response;
-        mmenos = menosmenos.data;
-        dadodois = mmenos[1];
-        data2 = dadodois["orderDate"];
-        document.getElementById('pedido2').innerHTML = dadodois["documentNo"] + " - " + data2.split('-').reverse().join('/');
-        return dadodois;
-    }
 
-    async function recepcaotres() {
-        tododado = await process();
-        menosdado = JSON.parse(tododado);
-        menosmenos = menosdado.response;
-        mmenos = menosmenos.data;
-        dadotres = mmenos[2];
-        data3 = dadotres["orderDate"];
-        document.getElementById('pedido3').innerHTML = dadotres["documentNo"] + " - " + data3.split('-').reverse().join('/');
-        return dadotres;
-    }
-
-    async function postedois(url = 'http://192.168.68.125:8000/botorder/') {
-        botfe = await recepcaodois();
-        botbruto = botfe["documentNo"];
-        botdata = { "id": botbruto };
-        const botresponsedois = await fetch(url, {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(botdata),
-
-        })
-        return botresponsedois.json();
-    }
-
-    async function postetres(url = 'http://192.168.68.125:8000/botorder/') {
-        botfe = await recepcaotres();
-        botbruto = botfe["documentNo"];
-        botdata = { "id": botbruto };
-        const botresponsetres = await fetch(url, {
-            method: "POST",
-            mode: "cors",
-            cache: "no-cache",
-            headers: {
-                "Content-type": "application/json"
-            },
-            body: JSON.stringify(botdata),
-
-        })
-        return botresponsetres.json();
-    }
-
-    async function poste(url = 'http://192.168.68.125:8000/botorder/') {
-        botfe = await recepcao();
-        botbruto = botfe["documentNo"];
-        botdata = { "id": botbruto };
+    async function poste(url = 'https://api-mallorca.onrender.com/botorder/') {
+        botfe = await recept();
+        botdata = { "bpartner": `${botfe}` };
+        jbotdata = JSON.stringify(botdata);
         const botresponse = await fetch(url, {
             method: "POST",
             mode: "cors",
@@ -172,8 +102,7 @@
             headers: {
                 "Content-type": "application/json"
             },
-            body: JSON.stringify(botdata),
-
+            body: jbotdata,
         })
         return botresponse.json();
     }
@@ -183,54 +112,21 @@
         lessfidado = JSON.parse(fidado);
         menosdado = lessfidado.response;
         datadado = menosdado.data;
-        zerodado = datadado[0];
-        if (zerodado.rastreio == null) {
-            document.getElementById('pedido1').innerHTML += " - sem rastreio"
-        }
-        try {
-            if (zerodado.rastreio != null) {
-                document.getElementById('pedido1').innerHTML += " - " + zerodado.rastreio;
+        for (let i = 0; i < datadado.length; i++) {
+            g = document.createElement("p");
+            g.setAttribute("id", "pedido" + `${i + 1}`);
+            element = document.getElementById('product');
+            element.appendChild(g)
+            dado = datadado[i];
+            datatime = dado.datepromised
+            if (dado.rastreio == null) {
+                document.getElementById(`pedido${i + 1}`).innerHTML = dado.documentno + " - " + datatime.split('-').reverse().join('/') + " - " + "SEM RASTREIO"
             }
-        } catch (error) {
-            document.getElementById('pedido1').innerHTML += " - sem rastreio"
-        }
-    }
-
-    async function finalrecievedois() {
-        fidado = await postedois();
-        lessfidado = JSON.parse(fidado);
-        menosdado = lessfidado.response;
-        datadado = menosdado.data;
-        zerodado = datadado[0];
-        if (zerodado.rastreio == null) {
-            document.getElementById('pedido2').innerHTML += " - sem rastreio"
-        }
-        try {
-            if (zerodado.rastreio != null) {
-                document.getElementById('pedido2').innerHTML += " - " + zerodado.rastreio;
+            else {
+                document.getElementById(`pedido${i + 1}`).innerHTML = dado.documentno + " - " + datatime.split('-').reverse().join('/') + " - " + dado.rastreio;
             }
-        } catch (error) {
-            document.getElementById('pedido2').innerHTML += " - sem rastreio"
         }
-    }
-
-    async function finalrecievetres() {
-        fidado = await postetres();
-        lessfidado = JSON.parse(fidado);
-        menosdado = lessfidado.response;
-        datadado = menosdado.data;
-        zerodado = datadado[0];
-        if (zerodado.rastreio == null) {
-            document.getElementById('pedido3').innerHTML += " - sem rastreio"
-        }
-        try {
-            if (zerodado.rastreio != null) {
-                document.getElementById('pedido3').innerHTML += " - " + zerodado.rastreio;
-            }
-        } catch (error) {
-            document.getElementById('pedido3').innerHTML += " - sem rastreio"
-        }
-        document.getElementById('loader').style.display = 'none'
+        document.getElementById('loader').style.display = 'none';
     }
 </script>
 
