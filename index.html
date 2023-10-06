@@ -17,7 +17,7 @@
             <h2>Insira o código de cliente</h2>
             <div class="text-deliver">
                 <input placeholder="Cód" id="codigo" type="text" class="texto">
-                <span onclick="criarDiv(), postagem(), recept(), process(), poste(), finalrecieve()"
+                <span onclick="criarDiv(), postagem(), recept(), process(), poste(), finalrecieve(), projeto()"
                     class="material-symbols-outlined">
                     send
                 </span>
@@ -34,6 +34,13 @@
                 </div>
             </div>
         </ul>
+        <ul id="studiolist" class="list" style="display: none;">
+            <h4>Consertos</h4>
+            <div class="list-item">
+                <div id="projectProduct" class="product">
+                </div>
+            </div>
+        </ul>
     </main>
 </body>
 
@@ -41,6 +48,8 @@
     function criarDiv() {
         document.getElementById('list').style.display = "block";
         document.getElementById('loader').style.display = "flex";
+        document.body.style.overflow = "hidden";
+        document.getElementById('studiolist').style.display = "block"
     }
 
     async function postagem(url = 'https://api-mallorca.onrender.com/client/', data = { "input": document.getElementById('codigo').value }) {
@@ -66,6 +75,68 @@
         document.getElementById('header').innerHTML = finaldata["_identifier"];
         finedata = finaldata["id"];
         return finedata
+    }
+
+    async function projeto(url = 'https://api-mallorca.onrender.com/project/') {
+        idbase = await recept();
+        const dados = { "partner": idbase }
+        console.log(dados);
+        const resposta = await fetch(url, {
+            method: "POST",
+            mode: "cors",
+            cache: "no-cache",
+            headers: {
+                "Content-type": "application/json"
+            },
+            body: JSON.stringify(dados),
+        })
+        const dado = await resposta.json();
+        parseDado = JSON.parse(dado);
+        responseDado = parseDado.response;
+        dataDado = responseDado.data;
+        console.log(dataDado);
+
+
+
+        for (let i = 0; i < dataDado.length; i++) {
+            e = document.createElement('div');
+            e.setAttribute("id", "popup" + `${i + 1}`);
+            e.setAttribute("class", "popup")
+            document.body.appendChild(e);
+            x = document.createElement('p');
+            x.setAttribute('id', 'close');
+            e.appendChild(x);
+            o = document.createElement("p");
+            o.setAttribute("id", "popuptext" + `${i + 1}`);
+            e.appendChild(o);
+            g = document.createElement("p");
+            g.setAttribute("id", "conserto" + `${i + 1}`);
+            element = document.getElementById('projectProduct');
+            element.appendChild(g)
+            arrayDado = dataDado[i];
+            elemento = document.getElementById('conserto' + `${i + 1}`);
+            elemento.innerHTML = "Conserto número: " + arrayDado.searchKey + "<br>" + "Data início: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "<span class='ver'>Ver mais</span>";
+            if (arrayDado.phase == 'AC') {
+                o.innerHTML +=  "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Retirado <br>'
+            }
+            else if (arrayDado.phase != 'AC' & arrayDado.endingDate != null) {
+                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Aguardando retirada <br>'
+                console.log(arrayDado.endingDate);
+            }
+            else {
+                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + 'Status: Em conserto <br>'
+            }
+            elemento.onclick = function reveal() {
+                pop = document.getElementById('popup' + `${i + 1}`);
+                pop.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            }
+            x.onclick = function erase() {
+                pop = document.getElementById('popup' + `${i + 1}`);
+                pop.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        }
     }
 
     async function process(url = 'https://api-mallorca.onrender.com/botorder/',) {
@@ -126,7 +197,15 @@
                 document.getElementById(`pedido${i + 1}`).innerHTML = dado.documentno + " - " + datatime.split('-').reverse().join('/') + " - " + dado.rastreio;
             }
         }
+        if (document.getElementById('pedido1') == null) {
+            g = document.createElement("p");
+            g.setAttribute("id", "pedido" + `1`);
+            element = document.getElementById('product');
+            element.appendChild(g)
+            document.getElementById('pedido1').innerHTML = "Não possui vendas nos últimos 60 dias"
+        }
         document.getElementById('loader').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 </script>
 
