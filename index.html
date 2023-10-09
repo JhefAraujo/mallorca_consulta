@@ -103,11 +103,9 @@
             element = document.getElementById('projectProduct');
             element.appendChild(g);
             arrayDado = dataDado[i];
-            console.log(arrayDado);
             dataAtual = new Date();
             dataAtual.getYear();
             dataPlanejada = new Date(arrayDado.contractDate);
-            console.log(dataAtual > dataPlanejada);
             elemento = document.getElementById('conserto' + `${i + 1}`);
             if (arrayDado != 'AC' & dataAtual > dataPlanejada & arrayDado.endingDate == null) {
                 elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Status: Em Atraso";
