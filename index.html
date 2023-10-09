@@ -129,8 +129,7 @@
             element.appendChild(c);
             document.getElementById('conserto1').innerHTML = "Não há consertos.";
         }
-        document.getElementById('loader').style.display = 'none';
-        document.body.style.overflow = 'auto';
+
     }
 
     async function process(url = 'https://api-mallorca.onrender.com/botorder/',) {
@@ -198,7 +197,8 @@
             element.appendChild(g)
             document.getElementById('pedido1').innerHTML = "Não possui vendas nos últimos 60 dias"
         }
-
+        document.getElementById('loader').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 </script>
 
