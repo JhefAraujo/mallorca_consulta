@@ -98,50 +98,36 @@
 
 
         for (let i = 0; i < dataDado.length; i++) {
-            e = document.createElement('div');
-            e.setAttribute("id", "popup" + `${i + 1}`);
-            e.setAttribute("class", "popup")
-            document.getElementById("popBox").appendChild(e);
-            x = document.createElement('p');
-            x.setAttribute('id', 'close');
-            e.appendChild(x);
-            o = document.createElement("p");
-            o.setAttribute("id", "popuptext" + `${i + 1}`);
-            e.appendChild(o);
             g = document.createElement("p");
             g.setAttribute("id", "conserto" + `${i + 1}`);
             element = document.getElementById('projectProduct');
             element.appendChild(g);
             arrayDado = dataDado[i];
+            console.log(arrayDado);
+            dataAtual = new Date();
+            dataAtual.getYear();
+            dataPlanejada = new Date(arrayDado.contractDate);
+            console.log(dataAtual > dataPlanejada);
             elemento = document.getElementById('conserto' + `${i + 1}`);
-            elemento.innerHTML = "Conserto número: " + arrayDado.searchKey + "<br>" + "Data início: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "<span class='ver'>Ver mais</span>";
-            if (arrayDado.phase == 'AC') {
-                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Retirado <br>'
+            if (arrayDado != 'AC' & dataAtual > dataPlanejada & arrayDado.endingDate == null) {
+                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Status: Em Atraso";
+            }
+            else if (arrayDado.phase == 'AC') {
+                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Real: " + arrayDado.endingDate.split('-').reverse().join('/') + "<br>" + "Status: Entregue";
             }
             else if (arrayDado.phase != 'AC' & arrayDado.endingDate != null) {
-                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + '<br>Status: Aguardando retirada <br>'
+                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Real: " + arrayDado.endingDate.split('-').reverse().join('/') + "<br>" + "Status: Pronto";
             }
-            else {
-                o.innerHTML += "Início dia: " + arrayDado.startingDate.split('-').reverse().join('/') + "<br>" + "Data planejada: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + 'Status: Em conserto <br>'
+            else if (arrayDado.endingDate == null & dataAtual < dataPlanejada) {
+                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Status: Em processo";
             }
-            elemento.onclick = function reveal() {
-                box = document.getElementById('popBox');
-                box.style.display = "flex";
-                pop = document.getElementById('popup' + `${i + 1}`);
-                pop.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
-                b = document.getElementById('blurry');
-                b.style.filter = "blur(5px)"
-            }
-            x.onclick = function erase() {
-                box = document.getElementById('popBox');
-                box.style.display = "none";
-                pop = document.getElementById('popup' + `${i + 1}`);
-                pop.style.display = 'none';
-                document.body.style.overflow = 'auto';
-                b = document.getElementById('blurry');
-                b.style.filter = "blur(0)"
-            }
+        }
+        if (document.getElementById('conserto1') == null) {
+            c = document.createElement("p");
+            c.setAttribute("id", "conserto" + `1`);
+            element = document.getElementById('projectProduct');
+            element.appendChild(c);
+            document.getElementById('conserto1').innerHTML = "Não há consertos.";
         }
         document.getElementById('loader').style.display = 'none';
         document.body.style.overflow = 'auto';

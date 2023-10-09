@@ -214,6 +214,10 @@ h2 {
     background-color: transparent;
 }
 
+span {
+    color: red;
+}
+
 .material-symbols-outlined {
     transform: translate(5px, 3px);
     background-color: white;
