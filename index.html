@@ -9,24 +9,24 @@
     <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.5/base64.min.js"></script>
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 </head>
 
 <body>
-    <main id="blurry">
-        <div class="box">
-            <h2>Insira o código de cliente</h2>
-            <div class="text-deliver">
-                <input placeholder="Cód" id="codigo" type="text" class="texto">
-                <span onclick="criarDiv(), postagem(), recept(), process(), poste(), finalrecieve(), projeto()"
-                    class="material-symbols-outlined">
-                    send
-                </span>
-            </div>
-            <div id="loader" class="loaderbox" style="display: none;">
-                <div class="load"></div>
-            </div>
+    <div id="box" class="box">
+        <h2>Insira o código de cliente</h2>
+        <div class="text-deliver">
+            <input autocomplete="off" max="4" min="1" placeholder="Cód" id="codigo" type="number" class="texto">
+            <span
+                onclick="criarDiv(), postagem(), recept(), process(), poste(), finalrecieve(), projeto(), reveal()"
+                class="material-symbols-outlined">
+                send
+            </span>
         </div>
+        <div id="loader" class="loaderbox" style="display: none;">
+            <div class="load"></div>
+        </div>
+    </div>
+    <main id="blurry">
         <ul id="list" class="list" style="display: none;">
             <h4>Últimas vendas</h4>
             <div class="list-item">
@@ -43,12 +43,35 @@
             </div>
         </ul>
     </main>
-    <div id="popBox" class="popbox"></div>
 </body>
-
 <script>
+    function reveal() {
+        document.getElementById('box').style.animation = 'boxappear 1.5s ease-in-out';
+        document.getElementById('box').style.height = '200px';
+    }
     function criarDiv() {
+        setTimeout(() => {
+            try {
+                for (let index = 0; index < 6; index++) {
+                    document.getElementById(`pedido${index + 1}`).remove();
+
+                }
+            } catch (error) {
+                console.log('sem nada');
+            }
+            try {
+                for (let i = 0; i < 6; i++) {
+                    document.getElementById(`conserto${i + 1}`).remove();
+
+                }
+            } catch (error) {
+                console.log('sem nada');
+            }
+        }, 1700);
+
+
         document.getElementById('list').style.display = "block";
+        document.getElementById('blurry').style.display = 'block';
         document.getElementById('loader').style.display = "flex";
         document.body.style.overflow = "hidden";
         document.getElementById('studiolist').style.display = "block"
@@ -109,16 +132,16 @@
             dataPlanejada = new Date(arrayDado.contractDate);
             elemento = document.getElementById('conserto' + `${i + 1}`);
             if (arrayDado != 'AC' & dataAtual > dataPlanejada & arrayDado.endingDate == null) {
-                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Status: Em Atraso";
+                elemento.innerHTML = "<span class='span'>" + arrayDado._identifier + "</span>" + "<br>" + "Em atraso, previsto: " + arrayDado.contractDate.split('-').reverse().join('/');
             }
             else if (arrayDado.phase == 'AC') {
-                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Real: " + arrayDado.endingDate.split('-').reverse().join('/') + "<br>" + "Status: Entregue";
+                elemento.innerHTML = "<strong> Entregue, finalizado: " + arrayDado.endingDate.split('-').reverse().join('/') + " </strong> <br>" + "<span class='span'>" + arrayDado._identifier + "</span> ";
             }
             else if (arrayDado.phase != 'AC' & arrayDado.endingDate != null) {
-                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Real: " + arrayDado.endingDate.split('-').reverse().join('/') + "<br>" + "Status: Pronto";
+                elemento.innerHTML = "<span class=''>" + arrayDado._identifier + "</span>" + "<br>" + "Pronto, finalizado: " + arrayDado.endingDate.split('-').reverse().join('/');
             }
             else if (arrayDado.endingDate == null & dataAtual < dataPlanejada) {
-                elemento.innerHTML = "<span>" + arrayDado._identifier + "</span>" + "<br>" + "Planejado: " + arrayDado.contractDate.split('-').reverse().join('/') + "<br>" + "Status: Em processo";
+                elemento.innerHTML = "<span class=''>" + arrayDado._identifier + "</span>" + "<br>" + "Em processo, Planejado: " + arrayDado.contractDate.split('-').reverse().join('/');
             }
         }
         if (document.getElementById('conserto1') == null) {
@@ -128,7 +151,8 @@
             element.appendChild(c);
             document.getElementById('conserto1').innerHTML = "Não há consertos.";
         }
-
+        document.getElementById('loader').style.display = 'none';
+        document.body.style.overflow = 'auto';
     }
 
     async function process(url = 'https://api-mallorca.onrender.com/botorder/',) {
@@ -196,9 +220,9 @@
             element.appendChild(g)
             document.getElementById('pedido1').innerHTML = "Não possui vendas nos últimos 60 dias"
         }
-        document.getElementById('loader').style.display = 'none';
-        document.body.style.overflow = 'auto';
+
     }
+
 </script>
 
 </html>

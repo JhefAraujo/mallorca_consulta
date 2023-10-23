@@ -6,8 +6,22 @@
     box-sizing: border-box;
     font-family: sans-serif;
     font-family: 'Montserrat', sans-serif;
-    text-align: center;
 }
+
+*::selection {
+    background-color: hsl(335, 100%, 50%);
+}
+
+html {
+    background-color: #F8EAD8;
+    width: 100vw;
+    overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+}
+
 .popbox {
     background-color: rgba(255, 255, 255, 0.582);
     display: none;
@@ -34,7 +48,16 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0px 15px 16px 0px rgba(0, 0, 0, 0.25);
+}
+
+main {
+    display: none;
+    transform: translateY(-20px);
+    z-index: 999999;
+    padding-bottom: 20px;
+    background-color: #F8EAD8;
+    border-radius: 35px;
+    animation: aparecer 4s ease-in-out;
 }
 
 .popup p {
@@ -42,15 +65,23 @@
 }
 
 body {
-    height: 100vh + 50px;
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #A7727D;
+}
+
+.product p:active {
+    background-color: #EDDBC7;
+    border-radius: 50px;
 }
 
 .ver {
-    color: red;
+    color: #A7727D;
     font-weight: 700;
 }
 
 input[type="search"] {
+    appearance: none;
     -webkit-appearance: none;
 }
 
@@ -74,7 +105,7 @@ input[type="search"] {
     content: ' ';
     height: 33px;
     width: 2px;
-    background-color: red;
+    background-color: #A7727D;
 }
 
 #close:before {
@@ -85,21 +116,36 @@ input[type="search"] {
     transform: rotate(-45deg);
 }
 
+#product p {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 15px;
+}
+
 
 #projectProduct {
-    transform: translatey(50px);
-    margin-bottom: 100px;
-    border-radius: 15px;
+    transform: translateY(50px);
+    border-radius: 35px;
+    background-color: #F9F5E7;
+    border: 1px solid #A7727D ;
+    margin-bottom: 50px;
+    animation: appear 3.5s ease-in-out;
+}
+
+#projectProduct p:active {
+    border-radius: 35px;
 }
 
 #projectProduct p {
-    padding-bottom: 10px;
-    border-bottom: 1px solid rgb(146, 146, 146);
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 10px;
 }
 
-p#conserto6 {
-    border-bottom: none;
-    margin-top: 7px;
+.copy {
+    position: absolute;
+    top: 70vh;
+    left: 100vw;
 }
 
 .btn {
@@ -111,7 +157,6 @@ p#conserto6 {
     margin-left: auto;
     margin-right: auto;
     color: white;
-    box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.35);
 }
 
 h4 {
@@ -120,34 +165,32 @@ h4 {
     font-size: 1.5em;
 }
 
-p {
-    margin-top: 5px;
-}
-
 .list {
-    animation: aparecer 2s linear;
+    animation: aparecer 4s linear;
 }
 
 @keyframes aparecer {
     0% {
         opacity: 0;
     }
-
+    99% {
+        opacity: 0;
+    }
     100% {
         opacity: 1;
     }
 }
 
 .header {
-    background-color: rgb(236, 236, 236);
+    background-color: #EDDBC7;
+    text-align: center;
     margin: auto;
     list-style: none;
     margin-top: 50px;
     font-size: 1.2em;
-    border-radius: 10px 10px 0px 0px;
+    border-radius: 75px 75px 0px 0px;
     padding: 5px;
-    box-shadow: 0px 15px 16px 0px rgba(0, 0, 0, 0.25);
-    border-bottom: 2px solid rgba(0, 0, 0, 0.384);
+    border: 1px solid #A7727D ;
 }
 
 .product {
@@ -155,10 +198,11 @@ p {
     margin-bottom: 50px;
     margin: auto;
     padding: 5px;
-    background-color: rgb(243, 243, 243);
-    border-radius: 0px 0px 10px 10px;
-    box-shadow: 0px 15px 16px 0px rgba(0, 0, 0, 0.25);
+    background-color: #F9F5E7;
+    border-radius: 0px 0px 20px 20px;
+    border: 1px solid #A7727D ;
 }
+
 
 .text_deliver {
     display: flex;
@@ -169,17 +213,17 @@ p {
 }
 
 h2 {
-    background-color: white;
-    font-weight: 200;
+    color: #F9F5E7;
+    font-weight: 400;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.404);
 }
 
 .box {
     max-width: 100vw;
-    height: 200px;
-    background-color: #f5f5f5;
+    background-color: #A7727D;
+    border-bottom: 35px solid #A7727D;
+    height: 100vh;
     opacity: 1;
     background-position: 27px 0, 27px 0, 0 0, 0 0;
     background-size: 54px 54px;
@@ -189,18 +233,15 @@ h2 {
     justify-content: center;
     flex-direction: column;
     row-gap: 15px;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.404);
 }
 
 .texto {
     font-size: 1.6em;
     width: 120px;
     padding: 3px;
-    border-radius: 5px;
+    border-radius: 55px;
     border: none;
     text-align: center;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.404);
-    -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.404);
 }
 
 .texto:focus {
@@ -215,23 +256,35 @@ h2 {
 }
 
 span {
-    color: red;
+    color: #0076b6;
+    font-weight: 600;
+}
+
+.span {
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+    padding-left: 10px;
+    text-align: center;
 }
 
 .material-symbols-outlined {
     transform: translate(5px, 3px);
     background-color: white;
-    color: red;
+    color: hsl(335, 100%, 50%);
     padding: 7px;
     border-radius: 50%;
-    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.404);
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
 }
 
 @media screen and (max-width: 450px) {
     .header {
         width: 95vw;
         border-radius: 20px 20px 0px 0px;
+    }
+
+    ::-webkit-scrollbar {
+        -webkit-appearance: none;
     }
 
     .product {
@@ -247,28 +300,37 @@ span {
 
 .loaderbox {
     width: 100vw;
-    height: 100vh;
+    height: calc(100vh - 180px);
     position: fixed;
-    top: 0;
+    top: 180px;
+    border-top-left-radius: 35px;
+    border-top-right-radius: 35px;
     left: 0;
-    background-color: rgba(255, 255, 255, 0.473);
-    backdrop-filter: blur(9px);
-    -webkit-backdrop-filter: blur(12px);
+    background-color: #F8EAD8;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 11111;
-    animation: appear 0.5s ease-in-out;
+    animation: appear 1.5s ease-in-out;
     overflow: hidden;
+}
+
+@keyframes boxappear {
+        0% {
+            height: 100vh;
+        }
+        100% {
+            height: 200px;
+        }
 }
 
 @keyframes appear {
     0% {
-        opacity: 0;
+        transform: translateY(100%);
     }
 
     100% {
-        opacity: 1;
+        transform: translateY(0);
     }
 }
 
