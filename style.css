@@ -6,6 +6,7 @@
     box-sizing: border-box;
     font-family: sans-serif;
     font-family: 'Montserrat', sans-serif;
+    -webkit-font-smoothing: subpixel-antialiased;
 }
 
 *::selection {
